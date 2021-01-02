@@ -4,6 +4,8 @@ const logo = require("asciiart-logo");
 
 const db = require("./db");
 
+const connection = require(".//db/connection");
+
 require("console.table");
 
 init();
@@ -127,20 +129,39 @@ async function loadMainPrompts() {
         default:
             return quit();
     }
-
-    async function viewEmployees() {
-        const empployees = await db.findAllEmployees();
-
-        console.log("\n");
-        console.table(employees);
-
-        loadMainPrompts();
-    }
-
-
-
-
-
-
-        
 }
+
+async function viewEmployees() {
+
+    let query = 
+    `SELECT 
+        employee.id, 
+        employee.first_name, 
+        employee.last_name, 
+        role.title, 
+        department.name AS department, 
+        role.salary, 
+        CONCAT(manager.first_name, ' ', manager.last_name) AS manager
+    FROM employee
+    LEFT JOIN role
+        ON employee.role_id = role.id
+    LEFT JOIN department
+        ON department.id = role.department_id
+    LEFT JOIN employee manager
+        ON manager.id = employee.manager_id`
+
+    await connection.query(query, (err, res)=>{
+    if (err) throw err;
+    console.table(res);
+    loadMainPrompts();
+    });
+}
+
+// async function viewEmployees() {
+//     const employees = await db.findAllEmployees();
+//     console.log("Hello - they want to view all employees.");
+//     console.log("\n");
+//     console.table(employees);
+
+//     loadMainPrompts();
+// }

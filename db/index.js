@@ -1,4 +1,5 @@
 const connection = require("./connection");
+// require("console.table");
 
 class DB {
 
@@ -9,11 +10,13 @@ class DB {
     findAllEmployees() {
         return this.connection.query(
             "SELECT employee.id, employee.first_name, employee.last_name"
-        )
-            //  role.title, department.name AS department, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee LEFT JOIN role on employee.role_id = role_id LEFT JOIN department on role.department
+        );
     }
 }
 
+module.exports = DB;
+
 // connection.query("SELECT * FROM employee", function (err, res) {
 //     if (err) throw err;
+//     console.table(res);
 // });
