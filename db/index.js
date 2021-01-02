@@ -1,7 +1,19 @@
 const connection = require("./connection");
-var consoletable = require("console.table");
 
-connection.query("SELECT * FROM employee", function (err, res) {
-    if (err) throw err;
-    console.table(res);
-});
+class DB {
+
+    constructor(connection) {
+        this.connection = connection;
+    }
+
+    findAllEmployees() {
+        return this.connection.query(
+            "SELECT employee.id, employee.first_name, employee.last_name"
+        )
+            //  role.title, department.name AS department, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee LEFT JOIN role on employee.role_id = role_id LEFT JOIN department on role.department
+    }
+}
+
+// connection.query("SELECT * FROM employee", function (err, res) {
+//     if (err) throw err;
+// });
